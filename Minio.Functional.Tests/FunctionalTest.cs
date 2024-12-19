@@ -1266,7 +1266,7 @@ public static class FunctionalTest
                 .WithBucket(bucketName)
                 .WithObjectsVersions(objVersions);
 
-            await minio.RemoveObjectsAsync(removeObjectsArgs).ConfigureAwait(false);
+            _ = await minio.RemoveObjectsAsync(removeObjectsArgs).ConfigureAwait(false);
 
             await TearDown(minio, bucketName).ConfigureAwait(false);
 
@@ -5905,8 +5905,6 @@ public static class FunctionalTest
         var bucketName = GetRandomName(15);
         var objectName = GetRandomObjectName(10);
         var contentType = "gzip";
-        var args = new Dictionary<string, string>
-            (StringComparer.Ordinal) { { "bucketName", bucketName }, { "recursive", "true" } };
         try
         {
             await Setup_Test(minio, bucketName).ConfigureAwait(false);
