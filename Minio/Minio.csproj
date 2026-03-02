@@ -1,6 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-      <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Title>MinIO SDK</Title>
+        <OutputType>Library</OutputType>
+        <PackageId>MinIO</PackageId>
+        <PackageTags>MinIO AIStor S3 ObjectStore</PackageTags>
+        <Description>MinIO SDK for .NET Core is used to access the MinIO/AIStor service</Description>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IsPackable>true</IsPackable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,4 +29,6 @@
             <_Parameter1>$(AssemblyName).UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
+    
+    
 </Project>
