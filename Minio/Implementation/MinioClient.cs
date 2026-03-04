@@ -118,6 +118,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
         var buckets = xResponse.Root?.Element("Buckets");
@@ -150,6 +151,7 @@ internal class MinioClient : IMinioClient
             if (resp.StatusCode == HttpStatusCode.OK)
             {
                 var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+                await using (responseBody.ConfigureAwait(false));
                 var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
                 var xTags = xResponse.Root!.Element("TagSet")?.Elements("Tag");
@@ -235,6 +237,7 @@ internal class MinioClient : IMinioClient
         var abortRuleId = resp.Headers.TryGetValue("X-Amz-Abort-Rule-Id");
         
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
         return new CreateMultipartUploadResult
@@ -320,6 +323,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
         return new CompleteMultipartUploadResult
@@ -482,6 +486,7 @@ internal class MinioClient : IMinioClient
                     if (!quiet)
                     {
                         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+                        await using (responseBody.ConfigureAwait(false));
                         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
                         foreach (var xResult in xResponse.Root!.Elements())
@@ -585,6 +590,7 @@ internal class MinioClient : IMinioClient
             using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
             foreach (var xContent in xResponse.Root!.Elements("Contents"))
@@ -645,6 +651,7 @@ internal class MinioClient : IMinioClient
             using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
             foreach (var xPart in xResponse.Root!.Elements("Part"))
@@ -688,6 +695,7 @@ internal class MinioClient : IMinioClient
             using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
             foreach (var xUpload in xResponse.Root!.Elements("Upload"))
@@ -719,6 +727,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
         return BucketNotification.Deserialize(xResponse.Root!);
@@ -762,6 +771,7 @@ internal class MinioClient : IMinioClient
         try
         {
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
             return Observable.Create<NotificationEvent>(async (obs, ct) =>
             {
                 // ReSharper disable once AccessToDisposedClosure
@@ -813,6 +823,7 @@ internal class MinioClient : IMinioClient
             using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
             return ObjectLockConfiguration.Deserialize(xResponse.Root!);
@@ -851,6 +862,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
         return VersioningConfiguration.Deserialize(xResponse.Root!);
@@ -885,6 +897,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
         return BucketEncryptionConfiguration.Deserialize(xResponse.Root!);
     }
@@ -926,6 +939,7 @@ internal class MinioClient : IMinioClient
             using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
             return LifecycleConfiguration.Deserialize(xResponse.Root!);
         }
@@ -972,6 +986,7 @@ internal class MinioClient : IMinioClient
             using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
             return ReplicationConfiguration.Deserialize(xResponse.Root!);
         }
@@ -1061,6 +1076,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
         var statusText = xResponse.Root?.Element("Status")?.Value;
         return statusText == "ON" ? LegalHoldStatus.On : LegalHoldStatus.Off;
@@ -1095,6 +1111,7 @@ internal class MinioClient : IMinioClient
         using var resp = await SendRequestAsync(req, cancellationToken).ConfigureAwait(false);
 
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
         return ObjectRetention.Deserialize(xResponse.Root!);
     }
@@ -1187,6 +1204,7 @@ internal class MinioClient : IMinioClient
 
         var versionId = resp.Headers.TryGetValue("X-Amz-Version-Id");
         var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using (responseBody.ConfigureAwait(false));
         var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
         return new CopyObjectResult
@@ -1218,6 +1236,7 @@ internal class MinioClient : IMinioClient
         try
         {
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             await foreach (var record in ReadSelectEventStreamAsync(responseBody, cancellationToken).ConfigureAwait(false))
             {
                 yield return record;
@@ -1377,6 +1396,7 @@ internal class MinioClient : IMinioClient
 
             var tags = new Dictionary<string, string>();
             var responseBody = await resp.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            await using (responseBody.ConfigureAwait(false));
             var xResponse = await XmlHelper.LoadXDocumentAsync(responseBody, cancellationToken).ConfigureAwait(false);
 
             var xTags = xResponse.Root!.Element("TagSet")?.Elements("Tag");
